@@ -27,7 +27,7 @@ export default function ReviewOrderPage() {
     setLoading(true);
 
     const orderId = "BYA-" + Date.now();
-    const suppliers = Array.from(new Set(cart.map((item) => item.supplierId)));
+    const suppliers = Array.from(new Set(cart.map((item: any) => item.supplierId)));
 
     await addDoc(collection(db, "orders"), {
       orderId,
