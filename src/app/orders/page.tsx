@@ -37,7 +37,8 @@ export default function MyOrdersPage() {
 
       const ref = collection(db, "orders");
       const q = query(ref, where("buyerId", "==", user.uid));
-      const snap = await getDocs(q);
+      const snap = await getDocs(q);// force deploy
+
 
       const list = snap.docs.map((d) => {
   const data: any = d.data();
