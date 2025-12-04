@@ -39,13 +39,21 @@ export default function MyOrdersPage() {
       const q = query(ref, where("buyerId", "==", user.uid));
       const snap = await getDocs(q);
 
-      const list = snap.docs.map((d) => ({
-        id: d.id,
-        ...d.data(),
-      }));
+      const list = snap.docs.map((d) => {
+  const data: any = d.data();
+  return {
+    id: d.id,
+    ...data,
+    createdAt: data.createdAt || null, // <-- makes TS happy
+  };
+});
 
       // Sort newest to oldest
-      list.sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
+      list.sort((a, b) => {
+  const aTime = a.createdAt?.seconds ?? 0;
+  const bTime = b.createdAt?.seconds ?? 0;
+  return bTime - aTime;
+});
 
       setOrders(list);
       setLoading(false);
