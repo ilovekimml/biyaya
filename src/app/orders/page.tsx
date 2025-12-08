@@ -5,6 +5,7 @@ import { db } from "@/app/lib/firebaseConfig";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { auth } from "@/app/lib/firebaseConfig";
 import Link from "next/link";
+import { formatOrderNumber } from "@/utils/formatOrderId";
 
 export default function MyOrdersPage() {
   const [orders, setOrders] = useState<any[]>([]);
@@ -21,15 +22,6 @@ export default function MyOrdersPage() {
     rejected: "#D32F2F",
   };
 
-  // Format Order ID (BIYAYA-YYMM-XXXXX)
-  function formatOrderNumber(id: string) {
-    const now = new Date();
-    const YY = now.getFullYear().toString().slice(-2);
-    const MM = String(now.getMonth() + 1).padStart(2, "0");
-    const last5 = id.slice(-5).toUpperCase();
-    return `BIYAYA-${YY}${MM}-${last5}`;
-  }
-
   useEffect(() => {
     async function loadOrders() {
       const user = auth.currentUser;
@@ -37,24 +29,23 @@ export default function MyOrdersPage() {
 
       const ref = collection(db, "orders");
       const q = query(ref, where("buyerId", "==", user.uid));
-      const snap = await getDocs(q);// force deploy
-
+      const snap = await getDocs(q);
 
       const list = snap.docs.map((d) => {
-  const data: any = d.data();
-  return {
-    id: d.id,
-    ...data,
-    createdAt: data.createdAt || null, // <-- makes TS happy
-  };
-});
+        const data: any = d.data();
+        return {
+          id: d.id,
+          ...data,
+          createdAt: data.createdAt || null,
+        };
+      });
 
       // Sort newest to oldest
       list.sort((a, b) => {
-  const aTime = a.createdAt?.seconds ?? 0;
-  const bTime = b.createdAt?.seconds ?? 0;
-  return bTime - aTime;
-});
+        const aTime = a.createdAt?.seconds ?? 0;
+        const bTime = b.createdAt?.seconds ?? 0;
+        return bTime - aTime;
+      });
 
       setOrders(list);
       setLoading(false);
@@ -102,7 +93,7 @@ export default function MyOrdersPage() {
               {order.status.toUpperCase()}
             </span>
 
-            {/* PRODUCT (show preview of 1st item) */}
+            {/* PRODUCT PREVIEW */}
             <div className="mt-2">
               <p className="font-bold">{firstItem?.name}</p>
               <p className="text-sm text-gray-600">
@@ -112,12 +103,10 @@ export default function MyOrdersPage() {
 
             <div className="border-t my-4"></div>
 
-            {/* TOTAL */}
             <p className="font-bold text-lg">
               Total: ₱{order.totalAmount.toLocaleString()}
             </p>
 
-            {/* BUTTON */}
             <Link
               href={`/orders/${order.id}`}
               className="block text-center mt-6 py-3 rounded-lg text-white font-semibold"
