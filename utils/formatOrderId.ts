@@ -1,4 +1,4 @@
-export function formatOrderNumber(id: string) {
+export function formatOrderNumber(id: string): string {
   const now = new Date();
   const YY = now.getFullYear().toString().slice(-2);
   const MM = String(now.getMonth() + 1).padStart(2, "0");
