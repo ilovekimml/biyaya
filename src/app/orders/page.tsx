@@ -6,6 +6,7 @@ import { collection, getDocs, query, where } from "firebase/firestore";
 import { auth } from "@/app/lib/firebaseConfig";
 import Link from "next/link";
 import { formatOrderNumber } from "@/utils/formatOrderNumber";
+
 ;
 
 export default function MyOrdersPage() {
