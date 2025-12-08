@@ -13,65 +13,50 @@ export default function ProductsPage() {
   useEffect(() => {
     async function loadProducts() {
       const snap = await getDocs(collection(db, "products"));
-      const list = snap.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
+      const list = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
       setProducts(list);
     }
     loadProducts();
   }, []);
 
   return (
-    <div className="px-6 py-10 max-w-1200 mx-auto">
+    <div className="products-container">
+      <h1 className="text-3xl font-bold mb-6">Products</h1>
 
-      {/* Page Title */}
-      <h1 className="text-3xl font-bold mb-6 text-center">Products</h1>
-
-      {/* Product Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-
-        {products.map((p) => (
-          <div
-            key={p.id}
-            className="border rounded-lg shadow-sm hover:shadow-md transition p-4 bg-white"
-          >
-            {/* Product Image */}
-            {p.images?.length > 0 ? (
-              <Image
-                src={p.images[0]}
-                alt={p.name}
-                width={300}
-                height={300}
-                className="w-full h-48 object-cover rounded-md"
+      <div className="products-grid">
+        {products.map(product => (
+          <div key={product.id} className="product-card">
+            {product.images?.[0] ? (
+              <img
+                src={product.images[0]}
+                className="product-image"
+                alt={product.name}
               />
             ) : (
-              <div className="w-full h-48 bg-gray-200 flex items-center justify-center rounded-md">
-                No Image
-              </div>
+              <div className="product-image"></div>
             )}
 
-            {/* Product Info */}
-            <h2 className="text-lg font-semibold mt-3">{p.name}</h2>
-            <p className="text-sm text-gray-600">{p.category || "No category"}</p>
+            <div className="product-info">
+              <div className="product-name">{product.name}</div>
 
-            <p className="mt-1 font-medium">
-              ₱{p.price} / {p.unit || "piece"}
-            </p>
+              <div className="product-category">
+                {product.category || "No category"}
+              </div>
 
-            <p className="text-sm text-gray-500">MOQ: {p.moq} {p.unit}</p>
+              <div className="product-price">
+                ₱{product.price} / {product.unit}
+              </div>
 
-            <p className="text-sm mt-1">
-              Supplier: <span className="font-medium">{p.supplierName || "Unnamed Supplier"}</span>
-            </p>
+              <div>MOQ: {product.moq} {product.unit}</div>
+              <div>Supplier: {product.supplier || "Unnamed Supplier"}</div>
 
-            {/* View Button */}
-            <button
-              onClick={() => router.push(`/products/${p.id}`)}
-              className="mt-3 w-full py-2 bg-[#b87333] text-white font-semibold rounded-md hover:bg-[#a1642b]"
-            >
-              View Details
-            </button>
+              <a
+                className="product-btn"
+                onClick={() => router.push(`/products/${product.id}`)}
+              >
+                View Details
+              </a>
+            </div>
           </div>
         ))}
       </div>
