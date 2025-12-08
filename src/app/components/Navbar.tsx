@@ -82,16 +82,17 @@ export default function Navbar() {
         )}
       </div>
 
-      <style>{`
+<style jsx>{`
         .navbar {
           width: 100%;
           background: #f5f5f5;
-          padding: 1rem 0;
-          box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+          padding: 0.6rem 0;
+          box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
           position: sticky;
           top: 0;
           z-index: 50;
         }
+
         .navbar-inner {
           max-width: 1200px;
           margin: 0 auto;
@@ -100,34 +101,42 @@ export default function Navbar() {
           align-items: center;
           padding: 0 1.5rem;
         }
+
         .navbar-logo {
           font-weight: 700;
           font-size: 1.5rem;
-          color: #8B4513;
+          color: #8b4513;
           text-decoration: none;
         }
+
         .navbar-links {
           display: flex;
-          gap: 1.5rem;
-          align-items: center;
+          gap: 1.8rem;
+          align-items: center; /* FIX: vertical alignment */
         }
+
         .navbar-links a {
           text-decoration: none;
           color: #444;
           font-weight: 500;
+          display: flex;
+          align-items: center;
         }
+
         .navbar-links a:hover {
-          color: #8B4513;
+          color: #8b4513;
         }
+
         .navbar-dashboard {
-          background: #8B4513;
+          background: #8b4513;
           color: white !important;
-          padding: 0.4rem 0.9rem;
+          padding: 0.45rem 0.9rem;
           border-radius: 8px;
           font-weight: 600;
         }
+
         .navbar-login {
-          background: #8B4513;
+          background: #8b4513;
           color: white;
           padding: 0.5rem 1rem;
           border-radius: 8px;
@@ -135,6 +144,8 @@ export default function Navbar() {
           font-weight: 600;
           border: none;
           cursor: pointer;
+          display: flex;
+          align-items: center;
         }
       `}</style>
     </header>
