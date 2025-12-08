@@ -22,25 +22,11 @@ export default function Home() {
     }, 4000);
     return () => clearInterval(interval);
   }, []);
-<header className="navbar">
-  <div className="navbar-inner">
-    <Link href="/" className="navbar-logo">BIYAYA</Link>
-
-    <nav className="navbar-links">
-      <Link href="/">Home</Link>
-      <Link href="/products">Products</Link>
-      <Link href="/about">About PH</Link>
-    </nav>
-
-    <Link href="/login" className="navbar-login">Login</Link>
-  </div>
-</header>
 
   return (
     <main>
       <section className="hero">
         <div className="hero-inner">
-
           {/* IMAGES */}
           {images.map((src, i) => (
             <div
@@ -78,9 +64,12 @@ export default function Home() {
             </p>
 
             <div className="hero-buttons">
-              <Link href="/suppliers/upload" className="hero-btn hero-btn-primary">
-  Become a Supplier
-</Link>
+              <Link
+                href="/suppliers/upload"
+                className="hero-btn hero-btn-primary"
+              >
+                Become a Supplier
+              </Link>
 
               <Link href="/products" className="hero-btn hero-btn-secondary">
                 Explore Products
@@ -99,7 +88,6 @@ export default function Home() {
               />
             ))}
           </div>
-
         </div>
       </section>
     </main>
