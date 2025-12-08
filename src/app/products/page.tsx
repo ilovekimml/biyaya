@@ -2,136 +2,73 @@
 
 import { useEffect, useState } from "react";
 import { db } from "@/app/lib/firebaseConfig";
-import { collection, getDocs, doc, getDoc } from "firebase/firestore";
+import { collection, getDocs } from "firebase/firestore";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
-interface Product {
-  id: string;
-  name: string;
-  price: number;
-  unit: string;
-  moq: number;
-  category?: string;
-  origin?: string;
-
-  image?: string;       // old field
-  images?: string[];    // new field
-
-  supplierId?: string;
-}
-
 export default function ProductsPage() {
   const router = useRouter();
-
-  const [products, setProducts] = useState<Product[]>([]);
-  const [suppliers, setSuppliers] = useState<Record<string, string>>({});
+  const [products, setProducts] = useState<any[]>([]);
 
   useEffect(() => {
     async function loadProducts() {
-      try {
-        const snap = await getDocs(collection(db, "products"));
-
-        const list = snap.docs.map((d) => ({
-          id: d.id,
-          ...d.data(),
-        })) as Product[];
-
-        setProducts(list);
-
-        // Load suppliers
-        const map: Record<string, string> = {};
-
-        for (const item of list) {
-          if (item.supplierId && !map[item.supplierId]) {
-            const ref = doc(db, "users", item.supplierId);
-            const supSnap = await getDoc(ref);
-
-            if (supSnap.exists()) {
-              const data = supSnap.data() as any;
-
-              map[item.supplierId] =
-                data.businessName ||
-                data.name ||
-                data.ownerName ||
-                "Unnamed Supplier";
-            } else {
-              map[item.supplierId] = "Unnamed Supplier";
-            }
-          }
-        }
-
-        setSuppliers(map);
-      } catch (err) {
-        console.error("Error loading products:", err);
-      }
+      const snap = await getDocs(collection(db, "products"));
+      const list = snap.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setProducts(list);
     }
-
     loadProducts();
   }, []);
 
-  // Select main thumbnail
-  const getThumbnail = (item: Product) => {
-    if (item.images && item.images.length > 0) return item.images[0];
-    if (item.image) return item.image;
-    return null;
-  };
-
   return (
-    <div className="px-6 py-10">
-      <h1 className="text-3xl font-bold mb-8">Products</h1>
+    <div className="px-6 py-10 max-w-1200 mx-auto">
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-        {products.map((item) => (
+      {/* Page Title */}
+      <h1 className="text-3xl font-bold mb-6 text-center">Products</h1>
+
+      {/* Product Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+
+        {products.map((p) => (
           <div
-            key={item.id}
-            className="border shadow-md rounded-xl bg-white p-4 flex flex-col"
+            key={p.id}
+            className="border rounded-lg shadow-sm hover:shadow-md transition p-4 bg-white"
           >
-            {/* IMAGE */}
-            <div className="w-full h-56 relative mb-4 rounded-md overflow-hidden bg-gray-100">
-              {getThumbnail(item) ? (
-                <Image
-                  src={getThumbnail(item)!}
-                  alt={item.name || "Product Image"}
-                  fill
-                  unoptimized
-                  className="object-cover object-center"
-                />
-              ) : (
-                <div className="w-full h-full flex items-center justify-center text-gray-400">
-                  No Image
-                </div>
-              )}
-            </div>
+            {/* Product Image */}
+            {p.images?.length > 0 ? (
+              <Image
+                src={p.images[0]}
+                alt={p.name}
+                width={300}
+                height={300}
+                className="w-full h-48 object-cover rounded-md"
+              />
+            ) : (
+              <div className="w-full h-48 bg-gray-200 flex items-center justify-center rounded-md">
+                No Image
+              </div>
+            )}
 
-            {/* NAME */}
-            <h2 className="font-bold text-lg leading-tight">{item.name}</h2>
+            {/* Product Info */}
+            <h2 className="text-lg font-semibold mt-3">{p.name}</h2>
+            <p className="text-sm text-gray-600">{p.category || "No category"}</p>
 
-            {/* CATEGORY */}
-            <p className="text-sm text-gray-600">
-              {item.category || "No category"}
+            <p className="mt-1 font-medium">
+              ₱{p.price} / {p.unit || "piece"}
             </p>
 
-            {/* PRICE */}
-            <p className="text-sm font-semibold mt-1 text-brown-700">
-              ₱{item.price} / {item.unit}
+            <p className="text-sm text-gray-500">MOQ: {p.moq} {p.unit}</p>
+
+            <p className="text-sm mt-1">
+              Supplier: <span className="font-medium">{p.supplierName || "Unnamed Supplier"}</span>
             </p>
 
-            {/* MOQ */}
-            <p className="text-sm">
-              MOQ: {item.moq} {item.unit}
-            </p>
-
-            {/* SUPPLIER */}
-            <p className="text-sm mb-4">
-              Supplier: {suppliers[item.supplierId ?? ""] || "Unnamed"}
-            </p>
-
-            {/* BUTTON */}
+            {/* View Button */}
             <button
-              onClick={() => router.push(`/products/${item.id}`)}
-              className="w-full px-4 py-2 rounded-lg text-white font-medium"
-              style={{ backgroundColor: "#D4A373" }}
+              onClick={() => router.push(`/products/${p.id}`)}
+              className="mt-3 w-full py-2 bg-[#b87333] text-white font-semibold rounded-md hover:bg-[#a1642b]"
             >
               View Details
             </button>
