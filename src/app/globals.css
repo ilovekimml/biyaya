@@ -240,83 +240,98 @@
   position: fixed;
   top: 0;
   left: 0;
-  padding: 6px 0;
+  padding: 10px 0;
   z-index: 999;
-  backdrop-filter: blur(10px);
-  background: rgba(0, 0, 0, 0.08);
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
 }
 
-
+/* Container */
 .navbar-inner {
   max-width: 1200px;
   margin: 0 auto;
+  padding: 0 24px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  .navbar-inner {
-  padding: 0 24px;
 }
 
-}
-
+/* Logo */
 .navbar-logo {
-  font-size: 1.1rem;
+  font-size: 1.3rem;
   font-weight: 700;
   color: hsl(33, 81%, 45%);
   text-decoration: none;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.12em;
 }
 
+/* Links */
 .navbar-links {
   display: flex;
-  gap: 22px;
+  align-items: center;
+  gap: 28px;
 }
 
 .navbar-links a {
   color: #2e2e2e;
-  .navbar-links a {
-  color: #2e2e2e;    /* visible dark grey */
   font-weight: 500;
-}
+  font-size: 1rem;
   text-decoration: none;
-  font-size: 0.92rem;
-  opacity: 0.8;
-  transition: opacity 0.2s ease;
+  opacity: 0.85;
+  transition: opacity 0.2s ease, color 0.2s ease;
 }
 
 .navbar-links a:hover {
   opacity: 1;
+  color: hsl(33, 81%, 45%);
 }
 
+/* Buttons (My Orders, Logout) */
+.button-link,
 .navbar-login {
-  padding: 7px 16px;
-  background: #b87333;
-  border-radius: 40px;
-  color: #fff;
-  font-size: 0.9rem;
+  background: #8B4513;
+  color: #fff !important;
+  padding: 7px 18px;
+  border-radius: 8px;
+  font-size: 0.92rem;
   font-weight: 600;
   text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 34px;
   transition: background 0.2s ease, transform 0.2s ease;
 }
 
+.button-link:hover,
 .navbar-login:hover {
-  background: #cf8d45;
+  background: #a85a1c;
   transform: translateY(-1px);
 }
+
+/* Prevent overlap with navbar */
 main {
-  padding-top: 52px;
+  padding-top: 90px;
 }
+
+/* MOBILE NAVBAR */
 @media (max-width: 768px) {
+
   .navbar-inner {
     padding: 0 16px;
   }
 
   .navbar-links {
-    display: none; /* hide Home, Products, About on mobile */
+    display: none; /* hide links on mobile */
   }
 
   .navbar-login {
     font-size: 0.8rem;
     padding: 6px 14px;
+  }
+
+  main {
+    padding-top: 80px;
   }
 }
