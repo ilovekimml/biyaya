@@ -42,6 +42,7 @@ export default function Navbar() {
   return (
     <header className="navbar">
       <div className="navbar-inner">
+
         <Link href="/" className="navbar-logo">
           BIYAYA
         </Link>
@@ -52,41 +53,40 @@ export default function Navbar() {
           <Link href="/about">About PH</Link>
 
           {role === "supplier" && (
-            <Link href="/suppliers/dashboard" className="navbar-dashboard">
+            <Link href="/suppliers/dashboard" className="button-link">
               Dashboard
             </Link>
           )}
 
           {role === "admin" && (
-            <Link href="/admin/dashboard" className="navbar-dashboard">
+            <Link href="/admin/dashboard" className="button-link">
               Admin
             </Link>
           )}
 
-          {/* ✅ FIXED: ADD BUYER MY ORDERS */}
           {role === "buyer" && (
-            <Link href="/orders" className="navbar-dashboard">
+            <Link href="/orders" className="button-link">
               My Orders
             </Link>
           )}
         </nav>
 
         {user ? (
-          <button onClick={handleLogout} className="navbar-login">
+          <button onClick={handleLogout} className="button-link">
             Logout
           </button>
         ) : (
-          <Link href="/login" className="navbar-login">
+          <Link href="/login" className="button-link">
             Login
           </Link>
         )}
       </div>
 
-<style jsx>{`
+      <style jsx>{`
         .navbar {
           width: 100%;
           background: #f5f5f5;
-          padding: 0.6rem 0;
+          padding: 0.4rem 0;
           box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
           position: sticky;
           top: 0;
@@ -98,21 +98,21 @@ export default function Navbar() {
           margin: 0 auto;
           display: flex;
           justify-content: space-between;
-          align-items: center;
-          padding: 0 1.5rem;
+          align-items: center;   /* <<< FIX ALIGNMENT */
+          padding: 0 1.2rem;
         }
 
         .navbar-logo {
           font-weight: 700;
           font-size: 1.5rem;
-          color: #8b4513;
+          color: #8B4513;
           text-decoration: none;
         }
 
         .navbar-links {
           display: flex;
-          gap: 1.8rem;
-          align-items: center; /* FIX: vertical alignment */
+          gap: 1.3rem;
+          align-items: center;  /* <<< FIX “Products” going too deep */
         }
 
         .navbar-links a {
@@ -120,32 +120,20 @@ export default function Navbar() {
           color: #444;
           font-weight: 500;
           display: flex;
-          align-items: center;
+          align-items: center; /* <<< perfect vertical alignment */
         }
 
-        .navbar-links a:hover {
-          color: #8b4513;
-        }
-
-        .navbar-dashboard {
-          background: #8b4513;
+        .button-link {
+          background: #8B4513;
           color: white !important;
-          padding: 0.45rem 0.9rem;
+          padding: 0.35rem 0.8rem;   /* <<< FIX BUTTON HEIGHT */
           border-radius: 8px;
           font-weight: 600;
-        }
-
-        .navbar-login {
-          background: #8b4513;
-          color: white;
-          padding: 0.5rem 1rem;
-          border-radius: 8px;
           text-decoration: none;
-          font-weight: 600;
-          border: none;
-          cursor: pointer;
           display: flex;
-          align-items: center;
+          align-items: center;  /* <<< align text inside */
+          justify-content: center;
+          height: 34px;          /* <<< UNIFORM HEIGHT */
         }
       `}</style>
     </header>
