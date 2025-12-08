@@ -20,43 +20,38 @@ export default function ProductsPage() {
   }, []);
 
   return (
-    <div className="products-container">
-      <h1 className="text-3xl font-bold mb-6">Products</h1>
+    <div className="p-6">
+      <h1 className="text-3xl font-bold mb-6 text-center">Products</h1>
 
-      <div className="products-grid">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {products.map(product => (
-          <div key={product.id} className="product-card">
+          <div
+            key={product.id}
+            className="border rounded-xl shadow-md p-4 bg-white hover:shadow-lg transition cursor-pointer"
+            onClick={() => router.push(`/products/${product.id}`)}
+          >
             {product.images?.[0] ? (
-              <img
+              <Image
                 src={product.images[0]}
-                className="product-image"
                 alt={product.name}
+                width={400}
+                height={300}
+                className="w-full h-40 object-cover rounded-md"
               />
             ) : (
-              <div className="product-image"></div>
+              <div className="w-full h-40 bg-gray-200 rounded-md flex items-center justify-center">
+                <span className="text-gray-600">No Image</span>
+              </div>
             )}
 
-            <div className="product-info">
-              <div className="product-name">{product.name}</div>
+            <h2 className="text-lg font-semibold mt-3">{product.name}</h2>
+            <p className="text-sm text-gray-600">{product.category ?? "No category"}</p>
+            <p className="text-sm font-medium">₱{product.price} / {product.unit}</p>
+            <p className="text-sm text-gray-700">MOQ: {product.moq} {product.unit}</p>
 
-              <div className="product-category">
-                {product.category || "No category"}
-              </div>
-
-              <div className="product-price">
-                ₱{product.price} / {product.unit}
-              </div>
-
-              <div>MOQ: {product.moq} {product.unit}</div>
-              <div>Supplier: {product.supplier || "Unnamed Supplier"}</div>
-
-              <a
-                className="product-btn"
-                onClick={() => router.push(`/products/${product.id}`)}
-              >
-                View Details
-              </a>
-            </div>
+            <button className="mt-3 px-4 py-2 bg-amber-700 text-white rounded-md hover:bg-amber-800 w-full">
+              View Details
+            </button>
           </div>
         ))}
       </div>
