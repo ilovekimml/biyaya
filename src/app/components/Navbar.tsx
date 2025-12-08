@@ -42,7 +42,6 @@ export default function Navbar() {
   return (
     <header className="navbar">
       <div className="navbar-inner">
-
         <Link href="/" className="navbar-logo">
           BIYAYA
         </Link>
@@ -53,30 +52,30 @@ export default function Navbar() {
           <Link href="/about">About PH</Link>
 
           {role === "supplier" && (
-            <Link href="/suppliers/dashboard" className="button-link">
+            <Link href="/suppliers/dashboard" className="nav-button">
               Dashboard
             </Link>
           )}
 
           {role === "admin" && (
-            <Link href="/admin/dashboard" className="button-link">
+            <Link href="/admin/dashboard" className="nav-button">
               Admin
             </Link>
           )}
 
           {role === "buyer" && (
-            <Link href="/orders" className="button-link">
+            <Link href="/orders" className="nav-button">
               My Orders
             </Link>
           )}
         </nav>
 
         {user ? (
-          <button onClick={handleLogout} className="button-link">
+          <button onClick={handleLogout} className="nav-button">
             Logout
           </button>
         ) : (
-          <Link href="/login" className="button-link">
+          <Link href="/login" className="nav-button">
             Login
           </Link>
         )}
@@ -86,7 +85,7 @@ export default function Navbar() {
         .navbar {
           width: 100%;
           background: #f5f5f5;
-          padding: 0.4rem 0;
+          padding: 10px 0;
           box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
           position: sticky;
           top: 0;
@@ -96,44 +95,41 @@ export default function Navbar() {
         .navbar-inner {
           max-width: 1200px;
           margin: 0 auto;
+          padding: 0 20px;
           display: flex;
           justify-content: space-between;
-          align-items: center;   /* <<< FIX ALIGNMENT */
-          padding: 0 1.2rem;
+          align-items: center;
         }
 
         .navbar-logo {
           font-weight: 700;
-          font-size: 1.5rem;
-          color: #8B4513;
-          text-decoration: none;
+          font-size: 1.6rem;
+          color: #8b4513;
         }
 
         .navbar-links {
           display: flex;
-          gap: 1.3rem;
-          align-items: center;  /* <<< FIX “Products” going too deep */
+          gap: 22px; /* original spacing */
+          align-items: center;
         }
 
         .navbar-links a {
-          text-decoration: none;
+          font-size: 1rem;
           color: #444;
+          text-decoration: none;
           font-weight: 500;
-          display: flex;
-          align-items: center; /* <<< perfect vertical alignment */
         }
 
-        .button-link {
-          background: #8B4513;
+        .nav-button {
+          background: #8b4513;
           color: white !important;
-          padding: 0.35rem 0.8rem;   /* <<< FIX BUTTON HEIGHT */
+          padding: 6px 14px;
           border-radius: 8px;
           font-weight: 600;
           text-decoration: none;
           display: flex;
-          align-items: center;  /* <<< align text inside */
-          justify-content: center;
-          height: 34px;          /* <<< UNIFORM HEIGHT */
+          align-items: center;
+          height: 36px;
         }
       `}</style>
     </header>
