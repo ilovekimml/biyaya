@@ -19,7 +19,7 @@
   position: relative;
   width: 100%;
   max-width: 1200px;
-  height: min(70vh, 560px); /* NOT full screen */
+  height: min(70vh, 560px);
   min-height: 320px;
   overflow: hidden;
   border-radius: 16px;
@@ -39,7 +39,7 @@
   opacity: 1;
 }
 
-/* Dark gradient at bottom for text contrast */
+/* Gradient */
 .hero-gradient {
   position: absolute;
   inset: 40% 0 0 0;
@@ -52,7 +52,7 @@
   pointer-events: none;
 }
 
-/* Text overlay */
+/* Text */
 .hero-content {
   position: absolute;
   inset: auto 10% 12% 10%;
@@ -81,7 +81,6 @@
   text-shadow: 0 3px 12px rgba(0, 0, 0, 0.8);
 }
 
-/* simple typing-ish reveal */
 .hero-tagline-text {
   display: inline-block;
   white-space: nowrap;
@@ -110,12 +109,12 @@
   font-size: 0.95rem;
   font-weight: 600;
   text-decoration: none;
-  transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease,
-    color 0.18s ease;
+  transition: transform 0.18s ease, box-shadow 0.18s ease,
+    background 0.18s ease, color 0.18s ease;
 }
 
 .hero-btn-primary {
-  background: #b87333; /* warm copper */
+  background: #b87333;
   color: #fff;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
 }
@@ -151,11 +150,9 @@
   width: 9px;
   height: 9px;
   border-radius: 999px;
-  border: none;
   background: rgba(255, 255, 255, 0.45);
   cursor: pointer;
-  padding: 0;
-  transition: width 0.18s ease, background 0.18s ease, transform 0.18s ease;
+  transition: width 0.18s, background 0.18s, transform 0.18s;
 }
 
 .hero-dot-active {
@@ -166,36 +163,21 @@
 
 /* Animations */
 @keyframes hero-fade-in {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes hero-typing {
-  from {
-    width: 0;
-  }
-  to {
-    width: 100%;
-  }
+  from { width: 0; }
+  to { width: 100%; }
 }
 
 @keyframes hero-caret {
-  from,
-  to {
-    border-color: transparent;
-  }
-  50% {
-    border-color: rgba(255, 255, 255, 0.9);
-  }
+  from, to { border-color: transparent; }
+  50% { border-color: rgba(255, 255, 255, 0.9); }
 }
 
-/* --- Mobile tweaks --- */
+/* MOBILE HERO FIX */
 @media (max-width: 768px) {
   .hero {
     padding: 16px 10px 24px;
@@ -215,7 +197,6 @@
 
   .hero-logo {
     font-size: 2.2rem;
-    letter-spacing: 0.16em;
   }
 
   .hero-tagline {
@@ -229,12 +210,9 @@
   .hero-buttons {
     justify-content: center;
   }
-  main {
-  padding-top: 80px;
 }
 
-}
-/* === NAVBAR TOP (FIXED CLEAN HEADER) === */
+/* === NAVBAR === */
 .navbar {
   width: 100%;
   position: fixed;
@@ -247,7 +225,6 @@
   box-shadow: 0 2px 6px rgba(0,0,0,0.05);
 }
 
-/* Container */
 .navbar-inner {
   max-width: 1200px;
   margin: 0 auto;
@@ -257,16 +234,14 @@
   justify-content: space-between;
 }
 
-/* Logo */
 .navbar-logo {
   font-size: 1.3rem;
   font-weight: 700;
   color: hsl(33, 81%, 45%);
-  text-decoration: none;
   letter-spacing: 0.12em;
+  text-decoration: none;
 }
 
-/* Links */
 .navbar-links {
   display: flex;
   align-items: center;
@@ -279,7 +254,7 @@
   font-size: 1rem;
   text-decoration: none;
   opacity: 0.85;
-  transition: opacity 0.2s ease, color 0.2s ease;
+  transition: opacity 0.2s, color 0.2s;
 }
 
 .navbar-links a:hover {
@@ -287,7 +262,6 @@
   color: hsl(33, 81%, 45%);
 }
 
-/* Buttons (My Orders, Logout) */
 .button-link,
 .navbar-login {
   background: #8B4513;
@@ -301,7 +275,7 @@
   align-items: center;
   justify-content: center;
   height: 34px;
-  transition: background 0.2s ease, transform 0.2s ease;
+  transition: background 0.2s, transform 0.2s;
 }
 
 .button-link:hover,
@@ -310,27 +284,23 @@
   transform: translateY(-1px);
 }
 
-/* Prevent overlap with navbar */
+/* Prevent navbar overlap */
 main {
   padding-top: 90px;
 }
 
-/* MOBILE NAVBAR */
+/* MOBILE NAV */
 @media (max-width: 768px) {
-
   .navbar-inner {
     padding: 0 16px;
   }
-
   .navbar-links {
-    display: none; /* hide links on mobile */
+    display: none;
   }
-
   .navbar-login {
     font-size: 0.8rem;
     padding: 6px 14px;
   }
-
   main {
     padding-top: 80px;
   }
