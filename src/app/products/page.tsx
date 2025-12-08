@@ -1,57 +1,106 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
+import Link from "next/link";
 import { db } from "@/app/lib/firebaseConfig";
 import { collection, getDocs } from "firebase/firestore";
-import Image from "next/image";
-import { useRouter } from "next/navigation";
 
 export default function ProductsPage() {
-  const router = useRouter();
   const [products, setProducts] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function loadProducts() {
-      const snap = await getDocs(collection(db, "products"));
-      const list = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-      setProducts(list);
+      try {
+        const ref = collection(db, "products");
+        const snap = await getDocs(ref);
+
+        const list = snap.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+
+        setProducts(list);
+      } catch (error) {
+        console.error("Error loading products:", error);
+      }
+
+      setLoading(false);
     }
+
     loadProducts();
   }, []);
 
-  return (
-    <div className="p-6">
-      <h1 className="text-3xl font-bold mb-6 text-center">Products</h1>
+  if (loading)
+    return (
+      <div className="p-10 text-center text-lg font-semibold">
+        Loading products...
+      </div>
+    );
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {products.map(product => (
+  return (
+    <div className="max-w-6xl mx-auto px-6 py-10">
+      <h1 className="text-3xl font-bold mb-8" style={{ color: "#8B4513" }}>
+        Products
+      </h1>
+
+      {products.length === 0 && (
+        <p className="text-center text-gray-600">No products available.</p>
+      )}
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
+        {products.map((product) => (
           <div
             key={product.id}
-            className="border rounded-xl shadow-md p-4 bg-white hover:shadow-lg transition cursor-pointer"
-            onClick={() => router.push(`/products/${product.id}`)}
+            className="border rounded-xl bg-white shadow-md overflow-hidden"
           >
-            {product.images?.[0] ? (
+            {/* PRODUCT IMAGE */}
+            <div className="w-full h-60 relative">
               <Image
-                src={product.images[0]}
+                src={product.images?.[0] || "/no-image.png"}
                 alt={product.name}
-                width={400}
-                height={300}
-                className="w-full h-40 object-cover rounded-md"
+                fill
+                className="object-cover"
               />
-            ) : (
-              <div className="w-full h-40 bg-gray-200 rounded-md flex items-center justify-center">
-                <span className="text-gray-600">No Image</span>
-              </div>
-            )}
+            </div>
 
-            <h2 className="text-lg font-semibold mt-3">{product.name}</h2>
-            <p className="text-sm text-gray-600">{product.category ?? "No category"}</p>
-            <p className="text-sm font-medium">₱{product.price} / {product.unit}</p>
-            <p className="text-sm text-gray-700">MOQ: {product.moq} {product.unit}</p>
+            <div className="p-5">
+              {/* PRODUCT NAME */}
+              <h2 className="text-xl font-bold mb-2">{product.name}</h2>
 
-            <button className="mt-3 px-4 py-2 bg-amber-700 text-white rounded-md hover:bg-amber-800 w-full">
-              View Details
-            </button>
+              {/* CATEGORY */}
+              <p className="text-gray-500 text-sm mb-1">
+                {product.category || "No category"}
+              </p>
+
+              {/* PRICE */}
+              <p className="text-lg font-bold" style={{ color: "#8B4513" }}>
+                ₱{product.price?.toLocaleString()} / {product.unit}
+              </p>
+
+              {/* MOQ */}
+              <p className="text-sm text-gray-600">
+                MOQ: {product.moq} {product.unit}
+              </p>
+
+              {/* SUPPLIER */}
+              <p className="text-sm text-gray-600 mb-4">
+                Supplier:{" "}
+                {product.supplierName
+                  ? product.supplierName
+                  : "Unnamed Supplier"}
+              </p>
+
+              {/* BUTTON */}
+              <Link
+                href={`/products/${product.id}`}
+                className="block w-full text-center py-3 rounded-lg text-white font-semibold"
+                style={{ backgroundColor: "#D4A373" }}
+              >
+                View Details
+              </Link>
+            </div>
           </div>
         ))}
       </div>
